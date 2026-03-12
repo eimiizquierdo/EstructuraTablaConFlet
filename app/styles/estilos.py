@@ -37,6 +37,14 @@ class Textos:
         font_family="Comic Sans MS",
         color=Colors.TEXT
     )
+
+    H4 = ft.TextStyle(
+        size=22, 
+        height=1.2, 
+        weight=ft.FontWeight.W_300, 
+        font_family="Comic Sans MS",
+        color=Colors.TEXT
+    )
     
     text = ft.TextStyle(
         size=18, 

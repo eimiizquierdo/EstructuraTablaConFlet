@@ -3,19 +3,19 @@ from typing import Any
 from app.services.transacciones_api_productos import list_products, get_product, create_product, update_product, delete_product
 from app.components.popup import show_popup, show_popup_auto_close, show_snackbar, confirm_dialog
 from app.components.error import ApiError, api_error_to_text
-from app.styles.estilos import Colors, Textos_estilos, Card
+from app.styles.estilos import Colors, Textos, Card
 
 def products_view(page:ft.Page) -> ft.Control:
     rows_data:list[dict[str,Any]]=[]
     total_items=0
-    total_text = ft.Text("Total de productos: (cargando...)", style=Textos_estilos.H4)
+    total_text = ft.Text("Total de productos: (cargando...)", style=Textos.H4)
     #Encabezados
     columns=[
-    ft.DataColumn(label=ft.Text("Nombre", style=Textos_estilos.H4)),
-    ft.DataColumn(label=ft.Text("Cantidad", style=Textos_estilos.H4)),
-    ft.DataColumn(label=ft.Text("@Ingreso", style=Textos_estilos.H4)),
-    ft.DataColumn(label=ft.Text("Min", style=Textos_estilos.H4)),
-    ft.DataColumn(label=ft.Text("@Max", style=Textos_estilos.H4))
+    ft.DataColumn(label=ft.Text("Nombre", style=Textos.H4)),
+    ft.DataColumn(label=ft.Text("Cantidad", style=Textos.H4)),
+    ft.DataColumn(label=ft.Text("@Ingreso", style=Textos.H4)),
+    ft.DataColumn(label=ft.Text("Min", style=Textos.H4)),
+    ft.DataColumn(label=ft.Text("@Max", style=Textos.H4))
     ]
 
     #Se definen las filas de la tabla
@@ -34,7 +34,7 @@ def products_view(page:ft.Page) -> ft.Control:
     )
 
     #Se crea la tabla con los encabezados(columnas) y los datos de prueba(data)
-    tabla=ft.DataFrame(
+    tabla=ft.DataTable(
         columns=columns,
         rows=data,
         width=900,
