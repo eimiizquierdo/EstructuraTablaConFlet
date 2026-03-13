@@ -13,9 +13,9 @@ def products_view(page:ft.Page) -> ft.Control:
     columns=[
     ft.DataColumn(label=ft.Text("Nombre", style=Textos.H4)),
     ft.DataColumn(label=ft.Text("Cantidad", style=Textos.H4)),
-    ft.DataColumn(label=ft.Text("@Ingreso", style=Textos.H4)),
+    ft.DataColumn(label=ft.Text("Ingreso", style=Textos.H4)),
     ft.DataColumn(label=ft.Text("Min", style=Textos.H4)),
-    ft.DataColumn(label=ft.Text("@Max", style=Textos.H4))
+    ft.DataColumn(label=ft.Text("Max", style=Textos.H4))
     ]
 
     #Se definen las filas de la tabla
@@ -44,4 +44,36 @@ def products_view(page:ft.Page) -> ft.Control:
         data_row_min_height=48
      )
 
+    #return tabla
+
+    async def actualizar_data():
+        nonlocal rows_data, total_items
+        try:
+            data = list_products(limit=100, offset=0) # Se conecta a transacciones_api_productos
+            total_items = data.get("total", 0)
+            #print(total_items)
+            total_text.value = "Total de productos:" + str(total_items)
+            rows_data = data.get("items", [])
+            actualizar_filas()
+        except Exception as ex:
+            await show_snackbar(page, f"Error: {str(ex)}", Colors.DANGER)
+    
+    def actualizar_filas():
+        nuevas_filas = []
+        for p in rows_data:
+            nuevas_filas.append(
+                ft.DataRow(
+                    cells=[
+                        ft.DataCell(ft.Text(p.get("name", ""))),
+                        ft.DataCell(ft.Text(str(p.get("quantity", "")))),
+                        ft.DataCell(ft.Text(p.get("ingreso_date", "") or "")),
+                        ft.DataCell(ft.Text(str(p.get("min_stock", "")))),
+                        ft.DataCell(ft.Text(str(p.get("max_stock", "")))),
+                    ]
+                )
+            )
+        tabla.rows = nuevas_filas
+        page.update()
+    
+    page.run_task(actualizar_data)
     return tabla
