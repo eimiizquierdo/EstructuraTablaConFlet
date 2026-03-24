@@ -76,4 +76,26 @@ def products_view(page:ft.Page) -> ft.Control:
         page.update()
     
     page.run_task(actualizar_data)
-    return tabla
+    #Regresa la tabla con los datos
+    #return tabla
+
+    # Botón de nuevo registro
+    btn_nuevo = ft.ElevatedButton(
+        "Nuevo Producto"
+    )
+
+    # Se prepara un sistema de columnas para mostrar tanto el total de registros y 
+    # la tabla y con un mejor formato
+    # Cuando se necesita el scroll también se muestra 
+    contenido = ft.Column(
+        # Se crea un espacio entra cada elemento 
+        spacing=30,
+        # Cuando no caben los elementos se genera el scroll 
+        scroll=ft.ScrollMode.AUTO,
+        # Se establecen tanto el total como la tabla para mostrar ######## Se agrega el botón de nuevo registro ########## 
+        controls=[btn_nuevo,total_text,ft.Container(content=tabla)]
+        )
+    
+    # Se muestra esa columna
+    return contenido
+

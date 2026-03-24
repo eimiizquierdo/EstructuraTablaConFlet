@@ -43,7 +43,7 @@ class Textos:
         height=1.2, 
         weight=ft.FontWeight.W_300, 
         font_family="Comic Sans MS",
-        color=Colors.TEXT
+        color=Colors.BLACK
     )
     
     text = ft.TextStyle(
