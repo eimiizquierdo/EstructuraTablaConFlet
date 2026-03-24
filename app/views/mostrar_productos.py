@@ -99,6 +99,9 @@ def products_view(page:ft.Page) -> ft.Control:
     # Se muestra esa columna
     #return contenido
 
-    final = ft.Container(expand=True, alignment=ft.Alignment(0,-1), content=contenido)
-    return final
+    tarjeta = ft.Container(content=contenido, **Card.TARJETA)
+    return tarjeta
+
+    #final = ft.Container(expand=True, alignment=ft.Alignment(0,-1), content=contenido)
+    #return final
 

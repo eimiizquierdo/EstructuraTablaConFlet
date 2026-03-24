@@ -1,8 +1,8 @@
 import flet as ft
 
 class Colors:
-    BG = "#A9CBE1"
-    CARD = "#B3A3DA"
+    BG = "#6F99B3"
+    CARD = "#A9CBE1"
     BORDER = "#483C6A"
     TEXT = "#FFFFFF"
     PRIMARY = "#5A4386"
@@ -103,7 +103,7 @@ class Buttons:
 
 class Card:
     TARJETA = {
-        "width": 600,
+        "width": 900,
         "padding": 16,
         "border_radius": 12,
         "bgcolor": Colors.CARD,
