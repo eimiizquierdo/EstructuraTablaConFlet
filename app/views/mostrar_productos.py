@@ -81,7 +81,7 @@ def products_view(page:ft.Page) -> ft.Control:
 
     # Botón de nuevo registro
     btn_nuevo = ft.ElevatedButton(
-        "Nuevo Producto"
+        "Nuevo Producto",
     )
 
     # Se prepara un sistema de columnas para mostrar tanto el total de registros y 
