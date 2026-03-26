@@ -1,8 +1,4 @@
 #app/views/nuevo_editar.py
-from fileinput import close
-from socket import close
-from turtle import save, save, title
-
 import flet as ft
 from app.components.popup import show_popup, close_popup
 
@@ -15,7 +11,7 @@ from app.components.popup import show_popup, close_popup
 def formulario_nuevo_editar_producto(page: ft.Page, on_submit, initial: dict | None = None):
     initial = initial or {}
     #si llega el id entonces es para editar, sino llega es nuevo registro
-    titulo=ft.Text("Editar producto" if initial.get("id") else "Nuevo producto")
+    titulo = ft.Text("Editar producto" if initial.get("id") else "Nuevo producto")
 
     # Campos
     # En el primer campo initial.get("name", "")
@@ -27,18 +23,18 @@ def formulario_nuevo_editar_producto(page: ft.Page, on_submit, initial: dict | N
     max_stock = ft.TextField(label="Stock máximo", value=str(initial.get("max_stock", 0)))
 
     # BOTONES
-    btn_cancelar=ft.TextButton("Cancelar", on_click=lambda e: close())
+    btn_cancelar = ft.TextButton("Cancelar", on_click=lambda e: close())
     #al dar click en guardar se ejecuta la función save
     #run_task sirve para ejecutar funciones asincronas
     #lambda es para crear un tipo de función anonima esta función lambda recibe a la variable e
     # y esta función contiene a page.run_task
-    btn_guardar=ft.Button("Guardar", on_click=lambda e: page.run_task(save, e))
+    btn_guardar = ft.Button("Guardar", on_click=lambda e: page.run_task(save, e))
 
     dlg: ft.AlertDialog # se declara la variable dlg y se espera que sea del tipo AlertDialog
 
     # Abre nueva ventana con el formulario
     # Modal en True bloquea la ventana y es forzoso usar algún botón para cerrar
-    dlg = ft.AlertDialog(modal=False, title=title, content=ft.Container(width=420,
+    dlg = ft.AlertDialog(modal=False, title=titulo, content=ft.Container(width=420,
             content=ft.Column(tight=True,
                 controls=[name, quantity, ingreso_date, min_stock, max_stock],
             ),
@@ -78,3 +74,5 @@ def formulario_nuevo_editar_producto(page: ft.Page, on_submit, initial: dict | N
     # Función para abrir esta ventana
     def open_():
         page.show_dialog(dlg)
+    
+    return dlg, open_, close
