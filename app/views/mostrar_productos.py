@@ -28,6 +28,29 @@ def products_view(page:ft.Page) -> ft.Control:
         dlg, open_, close = formulario_nuevo_editar_producto(page, on_submit=crear_nuevo_producto, initial=None)
         open_() #Abre la ventana
     ########### FIN nuevo producto #############
+
+    ########### Editar producto #############
+    # Esta función se ejecuta al hacer click en el icono "editar"
+    # lo que hace en primer lugar es abrir la ventana para modificar los datos del producto
+    # esa nueva ventana ya contendra los datos listos para ser editados
+    def inicio_editar_producto(p:dict[str,Any]):
+        #Se crea la función para transferir al formulario de editar producto
+        async def editar_producto(data:dict):
+            try:
+                await update_product(p["id"], data)
+                close()
+                await show_snackbar(page, "Éxito", "Producto actualizado.", bgcolor=Colors.SUCCESS)
+                await actualizar_data()
+            except ApiError as ex:
+                await show_popup(page, "Error", api_error_to_text(ex))
+            except Exception as ex:
+                await show_snackbar(page, "Error", str(ex), bgcolor=Colors.DANGER)
+
+        dlg, open_, close = formulario_nuevo_editar_producto(page, on_submit=editar_producto, initial=p)
+        open_()
+
+
+
     btn_nuevo = ft.Button("Nuevo producto",icon=ft.Icons.ADD,on_click=inicio_nuevo_producto)
 
 
@@ -40,7 +63,8 @@ def products_view(page:ft.Page) -> ft.Control:
     ft.DataColumn(label=ft.Text("Cantidad", style=Textos.H4)),
     ft.DataColumn(label=ft.Text("Ingreso", style=Textos.H4)),
     ft.DataColumn(label=ft.Text("Min", style=Textos.H4)),
-    ft.DataColumn(label=ft.Text("Max", style=Textos.H4))
+    ft.DataColumn(label=ft.Text("Max", style=Textos.H4)),
+    ft.DataColumn(label=ft.Text("Acciones", style=Textos.H4))
     ]
 
     #Se definen las filas de la tabla
@@ -54,6 +78,8 @@ def products_view(page:ft.Page) -> ft.Control:
         ft.DataCell(ft.Text("ingreso1...")),
         ft.DataCell(ft.Text("min1...")),
         ft.DataCell(ft.Text("max1...")),
+        # Para editar producto
+        ft.DataCell(ft.Text("..."))
         ]
         )
     )
@@ -94,6 +120,15 @@ def products_view(page:ft.Page) -> ft.Control:
                         ft.DataCell(ft.Text(p.get("ingreso_date", "") or "")),
                         ft.DataCell(ft.Text(str(p.get("min_stock", "")))),
                         ft.DataCell(ft.Text(str(p.get("max_stock", "")))),
+                        # Para editar producto
+                        ft.DataCell(
+                            ft.Row(
+                                controls=[
+                                    ft.IconButton(icon = ft.Icons.EDIT, tooltip = "Editar", on_click=lambda e, p=p: inicio_editar_producto(p)),
+                                    #ft.IconButton(icon = ft.Icons.DELETE, tooltip = "Eliminar", on_click=lambda e, p=p: inicio_borrar_producto(p))
+                                ]
+                            )
+                        )
                     ]
                 )
             )
