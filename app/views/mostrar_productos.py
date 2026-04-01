@@ -11,7 +11,7 @@ def products_view(page:ft.Page) -> ft.Control:
     #Esta función se ejecuta al hacer click en "Nuevo producto"
     #lo que hace en primer lugar es abrir la ventana para captura de datos
     def inicio_nuevo_producto(_e):
-    #Se crea la función para transferir al formulario de nuevo producto
+        #Se crea la función para transferir al formulario de nuevo producto
         async def crear_nuevo_producto(data:dict):#Esta función se lleva a la ventana para capturar
             try:
                 #Se conecta a transacciones_api_productos.py para crear en la BD un nuevo producto
@@ -23,12 +23,11 @@ def products_view(page:ft.Page) -> ft.Control:
             except Exception as ex:
                 await show_snackbar(page, "Error", str(ex), bgcolor=Colors.DANGER)
 
-                #Se llama a la función para abrir la ventana y poder capturar los datos,
-                # regresa 3 funciones(dlg,open_y close), se ejecuta open_()
+        #Se llama a la función para abrir la ventana y poder capturar los datos,
+        # regresa 3 funciones(dlg,open_y close), se ejecuta open_()
         dlg, open_, close = formulario_nuevo_editar_producto(page, on_submit=crear_nuevo_producto, initial=None)
         open_() #Abre la ventana
-                ########### FIN nuevo producto #############
-                
+    ########### FIN nuevo producto #############
     btn_nuevo = ft.Button("Nuevo producto",icon=ft.Icons.ADD,on_click=inicio_nuevo_producto)
 
 
@@ -75,7 +74,7 @@ def products_view(page:ft.Page) -> ft.Control:
     async def actualizar_data():
         nonlocal rows_data, total_items
         try:
-            data = list_products(limit=100, offset=0) # Se conecta a transacciones_api_productos
+            data = await list_products(limit=100, offset=0) # CAMBIO: agregado await
             total_items = data.get("total", 0)
             #print(total_items)
             total_text.value = "Total de productos:" + str(total_items)
@@ -125,4 +124,3 @@ def products_view(page:ft.Page) -> ft.Control:
 
     final = ft.Container(expand=True, alignment=ft.Alignment(0,-1), content=contenido)
     return final
-

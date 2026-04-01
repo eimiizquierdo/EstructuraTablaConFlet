@@ -24,6 +24,7 @@ def formulario_nuevo_editar_producto(page: ft.Page, on_submit, initial: dict | N
 
     # BOTONES
     btn_cancelar = ft.TextButton("Cancelar", on_click=lambda e: close())
+
     #al dar click en guardar se ejecuta la función save
     #run_task sirve para ejecutar funciones asincronas
     #lambda es para crear un tipo de función anonima esta función lambda recibe a la variable e
@@ -48,28 +49,29 @@ def formulario_nuevo_editar_producto(page: ft.Page, on_submit, initial: dict | N
         close_popup(page)
     
     async def save(_e):
-        # Ejemplo de Validación
+        # Validación
         if not name.value.strip():
             await show_popup(page, "Validación", "El nombre es obligatorio.")
             return
 
         try:
-            #recupera la información capturada en el formulario
             data = {
-            "name": name.value.strip(),
-            "quantity": int(quantity.value),
-            "ingreso_date": ingreso_date.value.strip(),
-            "min_stock": int(min_stock.value),
-            "max_stock": int(max_stock.value),
+                "name": name.value.strip(),
+                "quantity": int(quantity.value),
+                "ingreso_date": ingreso_date.value.strip(),
+                "min_stock": int(min_stock.value),
+                "max_stock": int(max_stock.value),
             }
         except ValueError:
             await show_popup(page, "Validación", "Cantidad y stocks deben ser números enteros.")
             return
 
-        #Se ejecuta la función que nos mandaron desde
-        # La pantalla principal (Nuevo registro o editar registro)
-        #Le mandamos la data capturada
-        await on_submit(data)
+        # Ejecutar la función on_submit
+        if on_submit:
+            await on_submit(data)
+            close()  # CAMBIO: cerrar después de guardar
+        else:
+            await show_popup(page, "Error", "No se pudo procesar la operación.")
 
     # Función para abrir esta ventana
     def open_():
